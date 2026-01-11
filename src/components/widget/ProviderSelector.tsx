@@ -1,16 +1,17 @@
-import { Button } from '@/components/ui/button.tsx';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select.tsx';
-import { Label } from '@/components/ui/label.tsx';
-import { ProviderKey, ProviderOption } from '@/providers/types.ts';
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { ProviderKey } from '@/providers/types';
+import { Providers } from '@/providers';
 
 export interface ProviderSelectorProps {
-  providers: ProviderOption[];
+  providers: Providers;
   selectedProvider: ProviderKey | null;
   onChangeProvider: (provider: ProviderKey) => void;
 }
@@ -24,12 +25,11 @@ export function ProviderSelector({
     return (
       <div className="flex flex-col gap-2">
         <Label htmlFor="provider">Choose Provider</Label>
-
         <Select
           value={selectedProvider}
           onValueChange={(value: ProviderKey) => onChangeProvider(value)}
         >
-          <SelectTrigger id="provider" className={'w-full'}>
+          <SelectTrigger id="provider" className="w-full">
             <SelectValue placeholder="Select a provider" />
           </SelectTrigger>
           <SelectContent>
@@ -43,10 +43,11 @@ export function ProviderSelector({
       </div>
     );
   }
+
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium">Choose Provider</h3>
-      <div className={'grid grid-cols-1 gap-4 sm:grid-cols-2'}>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {providers.map(provider => (
           <Button
             key={provider.key}

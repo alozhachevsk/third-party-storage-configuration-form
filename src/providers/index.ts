@@ -1,18 +1,26 @@
-import { awsProviderConfig } from './awsProviderConfig.ts';
-import { gcpProviderConfig } from './gcpProviderConfig.ts';
-import { AnyProviderConfig, ProviderKey } from './types.ts';
+import { awsProviderConfig } from './awsProviderConfig';
+import { gcpProviderConfig } from './gcpProviderConfig';
+import { ProviderConfig, ProviderKey } from './types';
 
-export const providerConfigs = [awsProviderConfig, gcpProviderConfig] as const;
-
-export const providersConfig = {
+const providerConfigs = {
   aws: awsProviderConfig,
   gcp: gcpProviderConfig,
-} as const;
+} satisfies Record<ProviderKey, ProviderConfig>;
 
-export function getProviderConfig(key: ProviderKey): AnyProviderConfig {
-  return providersConfig[key];
+export type ProviderConfigs = typeof providerConfigs;
+export type ProviderKeys = keyof ProviderConfigs;
+
+export function hasProviderConfig<K extends string>(key?: K | null): key is K & ProviderKeys {
+  return key != null && key in providerConfigs;
 }
 
-export const providers: { key: ProviderKey; label: string }[] = providerConfigs.map(
-  ({ key, label }) => ({ key, label }),
-);
+export function getProviderConfig<K extends ProviderKeys>(key: K) {
+  return providerConfigs[key];
+}
+
+export const providers = Object.values(providerConfigs).map(({ key, label }) => ({
+  key,
+  label,
+}));
+
+export type Providers = typeof providers;

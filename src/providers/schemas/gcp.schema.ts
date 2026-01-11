@@ -15,4 +15,4 @@ export const gcpSchema = z.object({
     .min(5, { message: 'Secret Key must be at least 5 characters' }),
 });
 
-export type GcpFormValues = z.infer<typeof gcpSchema>;
+export type GcpSchema = typeof gcpSchema;

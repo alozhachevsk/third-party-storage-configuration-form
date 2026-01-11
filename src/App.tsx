@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { getProviderConfig, providers } from './providers';
+import { getProviderConfig, hasProviderConfig, providers } from './providers';
 import { DestinationJson, ProviderForm, ProviderSelector } from '@/components';
-import { ProviderFormValuesMap, ProviderKey } from '@/providers/types.ts';
-import { Card } from '@/components/ui/card.tsx';
-import { UseFormSetError } from 'react-hook-form';
-import { validateBackend } from '@/helpers';
+import { ProviderDestination, ProviderKey } from '@/providers/types';
+import { Card } from '@/components/ui/card';
+import { backendValidation } from '@/lib/backendValidation';
 
 export function App() {
   const [selectedProvider, setSelectedProvider] = useState<ProviderKey | null>(null);
-  const [destinationJson, setDestinationJson] = useState<Record<string, unknown> | null>(null);
+  const [destinationJson, setDestinationJson] = useState<ProviderDestination | null>(null);
 
   const handleChangeProvider = (provider: ProviderKey) => {
     setSelectedProvider(provider);
@@ -20,31 +19,15 @@ export function App() {
     setDestinationJson(null);
   };
 
-  const handleSubmit = <K extends ProviderKey>(
-    values: ProviderFormValuesMap[K],
-    setError: UseFormSetError<ProviderFormValuesMap[K]>,
-  ) => {
-    if (!selectedProvider) {
-      return;
-    }
-
-    const hasError = validateBackend(values, setError);
-
-    if (hasError) {
-      return;
-    }
-
-    const config = getProviderConfig(selectedProvider);
-    const destination = config.buildDestination(values);
-
-    setDestinationJson(destination);
+  const handleSubmit = (destinationJson: ProviderDestination) => {
+    setDestinationJson(destinationJson);
   };
 
   return (
-    <div className={'flex min-h-screen w-full items-center justify-center p-5'}>
-      <div className={'w-full max-w-[550px]'}>
-        <Card className={'flex h-auto min-h-[320px] flex-col gap-5 p-5'}>
-          <h2 className={'mb-2 text-2xl'}>Third-Party Storage</h2>
+    <div className="flex min-h-screen w-full items-center justify-center p-5">
+      <div className="w-full max-w-137.5">
+        <Card className="flex h-auto min-h-80 flex-col gap-5 p-5">
+          <h2 className="mb-2 text-2xl">Third-Party Storage</h2>
 
           <ProviderSelector
             providers={providers}
@@ -52,10 +35,11 @@ export function App() {
             onChangeProvider={handleChangeProvider}
           />
 
-          {selectedProvider && (
+          {hasProviderConfig(selectedProvider) && (
             <ProviderForm
               key={selectedProvider}
               providerConfig={getProviderConfig(selectedProvider)}
+              backendValidation={backendValidation}
               onCancel={handleCancel}
               onSubmit={handleSubmit}
             />

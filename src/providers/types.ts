@@ -1,36 +1,35 @@
-import { ZodType } from 'zod';
-import { AwsFormValues, GcpFormValues } from '@/providers/schemas';
+import { z } from 'zod';
+import { FieldPath } from 'react-hook-form';
 
-export type ProviderKey = 'aws' | 'gcp';
+export type ProviderKey = string;
 
-export interface ProviderField {
-  name: string;
+export type ProviderSchema = z.core.$ZodObject<Record<string, z.core.$ZodString>>;
+
+export type ProviderField<Name extends string = string> = {
+  name: Name;
   label: string;
-  type: 'text' | 'password' | 'select';
-  options?: { label: string; value: string }[];
   placeholder?: string;
   fullWidth?: boolean;
-}
+  defaultValue?: string;
+} & (
+  | {
+      type: 'text' | 'password';
+    }
+  | {
+      type: 'select';
+      options: { label: string; value: string }[];
+    }
+);
 
-export interface ProviderConfig<
-  TValues extends Record<string, any>,
+export type ProviderDestination = Record<string, unknown>;
+
+export type ProviderConfig<
   K extends ProviderKey = ProviderKey,
-> {
+  S extends ProviderSchema = ProviderSchema,
+> = {
   key: K;
   label: string;
-  fields: ProviderField[];
-  schema: ZodType<TValues>;
-  buildDestination: (values: TValues) => Record<string, unknown>;
-}
-
-export interface ProviderOption {
-  key: ProviderKey;
-  label: string;
-}
-
-export interface ProviderFormValuesMap {
-  aws: AwsFormValues;
-  gcp: GcpFormValues;
-}
-
-export type AnyProviderConfig = ProviderConfig<AwsFormValues> | ProviderConfig<GcpFormValues>;
+  fields: ProviderField<FieldPath<z.infer<S>>>[];
+  schema: S;
+  buildDestination: (values: z.infer<S>) => ProviderDestination;
+};

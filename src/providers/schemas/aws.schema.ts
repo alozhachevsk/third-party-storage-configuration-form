@@ -13,4 +13,4 @@ export const awsSchema = z.object({
   secret: z.string().min(5, { message: 'Secret Key must be at least 5 characters' }),
 });
 
-export type AwsFormValues = z.infer<typeof awsSchema>;
+export type AwsSchema = typeof awsSchema;

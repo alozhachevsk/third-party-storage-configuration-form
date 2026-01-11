@@ -1,8 +1,9 @@
 import { ProviderConfig } from './types';
-import { AwsFormValues, awsSchema } from '@/providers/schemas';
+import { AwsSchema, awsSchema } from '@/providers/schemas';
 
-export const awsProviderConfig: ProviderConfig<AwsFormValues, 'aws'> = {
+export const awsProviderConfig: ProviderConfig<'aws', AwsSchema> = {
   key: 'aws',
+
   label: 'AWS',
 
   fields: [
@@ -21,6 +22,7 @@ export const awsProviderConfig: ProviderConfig<AwsFormValues, 'aws'> = {
         { label: 'US West (N. California)', value: 'us-west-1' },
         { label: 'US West (Oregon)', value: 'us-west-2' },
       ],
+      defaultValue: 'us-east-1',
     },
     {
       name: 'key',
@@ -36,11 +38,9 @@ export const awsProviderConfig: ProviderConfig<AwsFormValues, 'aws'> = {
 
   schema: awsSchema,
 
-  buildDestination: ({ bucket, region, key, secret }) => {
-    return {
-      url: `s3://s3.${region}.amazonaws.com/${bucket}`,
-      key,
-      secret,
-    };
-  },
+  buildDestination: ({ bucket, region, key, secret }) => ({
+    url: `s3://s3.${region}.amazonaws.com/${bucket}`,
+    key,
+    secret,
+  }),
 };
