@@ -10,7 +10,7 @@ export function App() {
   const [selectedProvider, setSelectedProvider] = useState<ProviderKey | null>(null);
   const [destinationJson, setDestinationJson] = useState<Record<string, unknown> | null>(null);
 
-  const onChangeProvider = (provider: ProviderKey) => {
+  const handleChangeProvider = (provider: ProviderKey) => {
     setSelectedProvider(provider);
     setDestinationJson(null);
   };
@@ -49,11 +49,11 @@ export function App() {
           <ProviderSelector
             providers={providers}
             selectedProvider={selectedProvider}
-            onChangeProvider={onChangeProvider}
+            onChangeProvider={handleChangeProvider}
           />
 
           {selectedProvider && (
-            <ProviderForm<typeof selectedProvider>
+            <ProviderForm
               key={selectedProvider}
               providerConfig={getProviderConfig(selectedProvider)}
               onCancel={handleCancel}

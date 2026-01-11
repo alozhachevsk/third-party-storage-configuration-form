@@ -1,3 +1,3 @@
 export * from './widget/ProviderSelector';
 export * from './widget/ProviderForm';
-export * from './widget/DestinationJSON';
+export * from './widget/DestinationJson';
