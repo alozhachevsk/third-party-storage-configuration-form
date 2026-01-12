@@ -43,7 +43,7 @@ This project is a small React + TypeScript application that demonstrates a **dyn
     - A validation error is shown under the corresponding input
     - Error message:
       ```
-      Backend validation failed for this field
+      Field contains invalid value "error"
       ```
 
 This simulates a real backend validation response.
@@ -56,7 +56,7 @@ Displayed below the form after successful submission:
 
 ```json
 {
-  "url": "s3://s3.us-east-1.amazonaws.com/my-bucket/folder/output.mp4",
+  "url": "s3://s3.us-east-1.amazonaws.com/my-bucket",
   "key": "myAccessKeyId",
   "secret": "mySecretAccessKey"
 }
@@ -79,7 +79,7 @@ http://localhost:5173
 ## 📌 Possible Improvements
 
 - Add animations for destination JSON appearance
-- Extract backend validation logic into a dedicated service
 - Add unit and integration tests
 - Persist form state per provider
 - Improve accessibility (ARIA labels, focus management)
+- Sort imports lib

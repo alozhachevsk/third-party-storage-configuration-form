@@ -25,6 +25,7 @@ export function ProviderSelector({
     return (
       <div className="flex flex-col gap-2">
         <Label htmlFor="provider">Choose Provider</Label>
+
         <Select
           value={selectedProvider}
           onValueChange={(value: ProviderKey) => onChangeProvider(value)}
@@ -32,6 +33,7 @@ export function ProviderSelector({
           <SelectTrigger id="provider" className="w-full">
             <SelectValue placeholder="Select a provider" />
           </SelectTrigger>
+
           <SelectContent>
             {providers.map(provider => (
               <SelectItem key={provider.key} value={provider.key}>
@@ -47,6 +49,7 @@ export function ProviderSelector({
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium">Choose Provider</h3>
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {providers.map(provider => (
           <Button
